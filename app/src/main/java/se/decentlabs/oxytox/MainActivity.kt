@@ -1,5 +1,6 @@
 package se.decentlabs.oxytox
 
+import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import se.decentlabs.oxytox.ui.booth.BoothFragment.Companion.REQUEST_VIDEO_CAPTURE
 
+const val TAG = "OXytOX"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,4 +26,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+    /*
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            val videoUri: Uri = intent.data
+            videoView.setVideoURI(videoUri)
+        }
+    }*/
+
 }

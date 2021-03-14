@@ -3,4 +3,6 @@
     <string name="title_party">Party</string>
     <string name="title_booth">Oxybooth</string>
     <string name="title_stats">Progress</string>
+    <string name="record">Record</string>
+    <string name="send">Send</string>
 </resources>
