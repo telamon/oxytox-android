@@ -1,16 +1,24 @@
 package se.decentlabs.oxytox
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.widget.Button
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import se.decentlabs.oxytox.ui.booth.BoothFragment.Companion.REQUEST_VIDEO_CAPTURE
+
 
 const val TAG = "OXytOX"
+const val REQUEST_VIDEO_CAPTURE = 1337
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,12 +34,17 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-    /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
-        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            val videoUri: Uri = intent.data
-            videoView.setVideoURI(videoUri)
-        }
-    }*/
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d(TAG, "onActivityResult: Incoming video reqCode: $requestCode, resCode: $resultCode, uri: ${intent.data} , ${Activity.RESULT_FIRST_USER}")
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            val videoUri = intent.data
+            if (videoUri == null) Log.d(TAG, "onActivityResult: Uri in intent.data is missing")
+            else {
+                Log.d(TAG, "onActivityResult: recording received '$videoUri'")
+                // videoView.setVideoURI(videoUri)
+            }
+        }
+    }
 }
