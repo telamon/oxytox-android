@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -17,7 +18,6 @@ import androidx.navigation.ui.setupWithNavController
 
 
 const val TAG = "OXytOX"
-const val REQUEST_VIDEO_CAPTURE = 1
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,16 +35,4 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "onActivityResult: Incoming video reqCode: $requestCode, resCode: $resultCode, uri: ${intent.data} , ${Activity.RESULT_FIRST_USER}")
-        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            val videoUri = intent.data
-            if (videoUri == null) Log.d(TAG, "onActivityResult: Uri in intent.data is missing")
-            else {
-                Log.d(TAG, "onActivityResult: recording received '$videoUri'")
-                // videoView.setVideoURI(videoUri)
-            }
-        }
-    }
 }

@@ -10,4 +10,7 @@ class BoothViewModel : ViewModel() {
         value = "Photobooth"
     }
     val text: LiveData<String> = _text
+
+    private val _videoData = MutableLiveData<ByteArray?>().apply { value = null }
+    val videoData: LiveData<ByteArray?> = _videoData
 }

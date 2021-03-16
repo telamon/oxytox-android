@@ -1,6 +1,7 @@
 package se.decentlabs.oxytox.ui.booth
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,12 +14,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import se.decentlabs.oxytox.R
-import se.decentlabs.oxytox.REQUEST_VIDEO_CAPTURE
 import se.decentlabs.oxytox.TAG
 
 private const val PERMISSIONS_REQUEST_CODE = 10
@@ -27,6 +28,8 @@ private val PERMISSIONS_REQUIRED = arrayOf(
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+const val REQUEST_VIDEO_CAPTURE = 1337
 
 class BoothFragment : Fragment() {
 
@@ -70,11 +73,28 @@ class BoothFragment : Fragment() {
 
 
     private fun dispatchTakeVideoIntent() {
-        Log.d(TAG, "dispatchTakeVideoIntent: fetching manager")
+        Log.d(TAG, "dispatchTakeVideoIntent: dispatching intent")
         val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         activity?.packageManager?.also { pm ->  intent.resolveActivity(pm) }
         startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d(TAG, "onActivityResult: Incoming video reqCode: $requestCode, resCode: $resultCode, uri: ${data?.data} , ${Activity.RESULT_FIRST_USER}")
+        if (resultCode != AppCompatActivity.RESULT_OK || requestCode != REQUEST_VIDEO_CAPTURE)  {
+            Toast.makeText(activity?.applicationContext, "Invalid result resCode $resultCode, reqCode $requestCode", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val videoUri = data?.data
+        if (videoUri == null) {
+            Log.d(TAG, "onActivityResult: Uri in intent.data is missing")
+            return
+        }
+        Log.d(TAG, "onActivityResult: recording received '$videoUri'")
+    }
+
     companion object {
         /** Convenience method used to check if all permissions required by this app are granted */
         fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
