@@ -17,7 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 
 
 const val TAG = "OXytOX"
-const val REQUEST_VIDEO_CAPTURE = 1337
+const val REQUEST_VIDEO_CAPTURE = 1
 
 class MainActivity : AppCompatActivity() {
 

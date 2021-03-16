@@ -24,7 +24,9 @@ import se.decentlabs.oxytox.TAG
 private const val PERMISSIONS_REQUEST_CODE = 10
 private val PERMISSIONS_REQUIRED = arrayOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.RECORD_AUDIO)
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
 class BoothFragment : Fragment() {
 
@@ -69,16 +71,9 @@ class BoothFragment : Fragment() {
 
     private fun dispatchTakeVideoIntent() {
         Log.d(TAG, "dispatchTakeVideoIntent: fetching manager")
-        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { vIntent ->
-            Log.d(TAG, "dispatchTakeVideoIntent: also Intent")
-            startActivityForResult(vIntent, REQUEST_VIDEO_CAPTURE)
-            val pm = activity?.packageManager
-            /*
-            vIntent.resolveActivity(packageManager)?.also {
-                Log.d(TAG, "dispatchTakeVideoIntent: startActivityForResult")
-                startActivityForResult(vIntent, REQUEST_VIDEO_CAPTURE)
-            }*/
-        }
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        activity?.packageManager?.also { pm ->  intent.resolveActivity(pm) }
+        startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
     }
     companion object {
         /** Convenience method used to check if all permissions required by this app are granted */
